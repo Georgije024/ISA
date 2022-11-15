@@ -11,7 +11,7 @@ public class City {
     private String name;
     @OneToMany
     private List<Address> addressList;
-    @OneToOne
+    @ManyToOne
     private Country country;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
