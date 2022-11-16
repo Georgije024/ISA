@@ -1,0 +1,8 @@
+.card:hover{
+    background-color: rgb(218, 238, 238);
+    cursor: pointer;
+}
+
+.dropdown-item{
+    cursor: pointer;
+}

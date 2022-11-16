@@ -1,5 +1,6 @@
 package blood.donation.app.controller;
 
+import blood.donation.app.dto.MedicalCenterDTO;
 import blood.donation.app.model.MedicalCenter;
 import blood.donation.app.service.MedicalCenterService;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,8 @@ public class MedicalCenterController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<MedicalCenter>> getCenters(){
-        List<MedicalCenter> medicalCenters = medicalCenterService.getCenters();
+    public ResponseEntity<List<MedicalCenterDTO>> getCenters(){
+        List<MedicalCenterDTO> medicalCenters = medicalCenterService.getCenters();
         if(medicalCenters != null){
             return new ResponseEntity<>(medicalCenters, HttpStatus.OK);
         }

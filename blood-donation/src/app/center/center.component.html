@@ -1,9 +1,23 @@
-<div class="container" style="text-align: center">
-        <ng-container *ngFor="let center of centers">
-            <div class="card col-md-3">
-                {{center.id}}
-                {{center.name}}
-                {{center.rating}}
-            </div>
-        </ng-container>
+<div class="col-md-4">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Sory by
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" *ngFor="let sort of sortValues" (click)="clickedValue(sort)">{{sort}}</a></li>
+      </ul>
+    </div>
+  </div>
+<br>
+<div class="container">
+    <ng-container *ngFor="let center of centers">
+        <div class="card col-md-12">
+            {{center.id}}
+            {{center.name}}
+            <br>Rating: {{center.rating}}
+            <br>City: {{center.city}}
+        </div>
+        <br>
+    </ng-container>
 </div>
