@@ -21,4 +21,6 @@ public class MedicalCenter {
     private Address address;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
+    @Column
+    private double rating;
 }

@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { MedicalcenterComponent } from './medicalcenter/medicalcenter.component';
 import { HomeComponent } from './home/home.component';
+import { CenterComponent } from './center/center.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    MedicalcenterComponent,
-    HomeComponent
+    HomeComponent,
+    CenterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
