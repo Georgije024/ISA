@@ -1,30 +1,30 @@
 package blood.donation.app.controller;
 
 import blood.donation.app.model.User;
-import blood.donation.app.service.RegistrationService;
+import blood.donation.app.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("register")
-public class RegistrationController {
+@RequestMapping("user")
+public class UserController {
 
-    private final RegistrationService registrationService;
+    private final UserService userService;
 
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user){
         String tempEmail = user.getEmail();
         if(tempEmail != null && !"".equals(tempEmail)){
-            User userObj = registrationService.fetchUserByEmail(tempEmail);
+            User userObj = userService.fetchUserByEmail(tempEmail);
             if(userObj != null){
                 return new ResponseEntity<>("Korisnik sa tom adresom vec postoji", HttpStatus.BAD_REQUEST);
             }
         }
-        return new ResponseEntity<>(registrationService.saveUser(user),HttpStatus.OK);
+        return new ResponseEntity<>(userService.saveUser(user),HttpStatus.OK);
     }
 }
