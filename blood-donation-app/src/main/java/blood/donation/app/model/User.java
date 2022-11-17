@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class User {
     private String name;
     @Column
     private String surname;
-    @Column
+    @OneToOne
     private Address address;
     @Column
     private String phoneNumber;
@@ -37,4 +38,6 @@ public class User {
     private String job;
     @Column
     private String biography;
+    @Column(columnDefinition = "integer default 0")
+    private Boolean isDeleted = false;
 }
