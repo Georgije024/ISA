@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../model/User';
 import { RegistrationserviceService } from './registrationservice.service';
+import { HttpErrorResponse } from '@angular/common/http';
+
+
 
 @Component({
   selector: 'app-registration',
@@ -9,9 +13,8 @@ import { RegistrationserviceService } from './registrationservice.service';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
-  registerForm: FormGroup;
-  loading = false;
-  submitted = false;
+  registerForm!: FormGroup;
+  alert: boolean = false;
   
   constructor(private registrationService: RegistrationserviceService,
         private formBuilder: FormBuilder,
@@ -27,18 +30,26 @@ export class RegistrationComponent implements OnInit {
       jmbg: ['', Validators.required],
       job: ['', Validators.required],
       biography: ['', Validators.required],
+      gender: ['', Validators.required]
   });
   }
 
 
   onSubmit(){
-    console.log(this.registerForm)
-    this.submitted = true;
     if (this.registerForm.invalid) {
-        return;
+      this.alert = true;  
+      return;
     }
 
-    this.loading = true;
-    this.registrationService.registerUser(this.registerForm.value).subscribe();
+    this.registrationService.registerUser(this.registerForm.value).subscribe(
+      (response: User) => {
+        //this.user = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+
+
   }
 }

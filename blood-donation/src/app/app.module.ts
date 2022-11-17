@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { CenterComponent } from './center/center.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormComponent } from './form/form.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
     HomeComponent,
     CenterComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    FormComponent
   ],
   imports: [
     BrowserModule,

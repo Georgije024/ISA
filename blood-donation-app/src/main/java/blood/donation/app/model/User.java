@@ -12,11 +12,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Userrrrtable")
 public class User {
     @Id
-    private String id;
-    @Column(unique = true)
+    private Long id;
+    @Column
     private String email;
     @Column
     private String password;
@@ -24,12 +23,12 @@ public class User {
     private String name;
     @Column
     private String surname;
-    @OneToOne
-    private Address address;
     @Column
     private String phoneNumber;
     @Column
     private String jmbg;
+    @OneToOne
+    private Address address;
     @Column
     private Gender gender;
     @Column
@@ -38,4 +37,5 @@ public class User {
     private String biography;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
+
 }

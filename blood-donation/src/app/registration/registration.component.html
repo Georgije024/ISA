@@ -1,12 +1,13 @@
+<div class="container" style="width: 40%">
 <h2>Register</h2>
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="name">First Name</label>
-        <input type="text" formControlName="name" class="form-control" />
+        <input type="text" formControlName="name" class="form-control" required />
     </div>
     <div class="form-group">
         <label for="surname">Last Name</label>
-        <input type="text" formControlName="surname" class="form-control"/>
+        <input type="text" formControlName="surname" class="form-control" />
     </div>
     <div class="form-group">
         <label for="password">Email</label>
@@ -17,8 +18,23 @@
         <input type="password" formControlName="password" class="form-control" />
     </div>
     <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password" class="form-control" />
+    </div>
+    <div class="form-group">
         <label for="phoneNumber">Phone Number</label>
         <input type="number" formControlName="phoneNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Gender</label><br>
+        <label>
+            <input type="radio" value="Male" formControlName="gender">
+            <span>Male</span>
+        </label><br>
+        <label>
+            <input type="radio" value="Female" formControlName="gender">
+            <span>Female</span>
+        </label>
     </div>
     <div class="form-group">
         <label for="jmbg">JMBG</label>
@@ -32,13 +48,17 @@
         <label for="biography">Biography</label>
         <input type="text" formControlName="biography" class="form-control" />
     </div>
-
-
-
-    <div class="form-group">
+    <br>
+    <div *ngIf="alert" class="alert alert-danger alert-dismissible fade show" role="alert"
+        style="width: 40%; margin-left:auto; margin-right:auto">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    </div>
+    <br>
+    <div class="form-group" style="text-align: center">
         <button class="btn btn-primary">
             Register
         </button>
-
     </div>
+    <br><br>
 </form>
+</div>
