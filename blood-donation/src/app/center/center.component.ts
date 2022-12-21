@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Center } from '../model/medicalCenter';
 import { CenterService } from './center.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-center',
@@ -12,7 +13,7 @@ export class CenterComponent implements OnInit {
   centers: Center[] = [];
   sortValues: string[] = ['By City', 'By Name', 'By Rating Ascending','By Rating Descending'];
 
-  constructor(private service: CenterService) { }
+  constructor(private service: CenterService, private router: Router) { }
 
   ngOnInit(): void {
     this.getCenters();
@@ -64,6 +65,9 @@ export class CenterComponent implements OnInit {
 
   sortByRatingDescending(){
     this.centers.sort((a,b) => b.rating-a.rating);
+  }
+
+  clickedCenter(center: Center){
   }
 
 }

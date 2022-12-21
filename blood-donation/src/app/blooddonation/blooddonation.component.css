@@ -1,0 +1,14 @@
+.common-list {
+    margin:auto;
+    margin-top: 150px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+  }
+
+  .common-list-item:hover {
+    margin-right: 130px;
+    background-color: pink;
+    cursor: pointer;
+  }
+

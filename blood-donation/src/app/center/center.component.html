@@ -12,7 +12,7 @@
 <br>
 <div class="container">
     <ng-container *ngFor="let center of centers">
-        <div class="card col-md-12">
+        <div class="card col-md-12" (click)="clickedCenter(center)">
             {{center.id}}
             {{center.name}}
             <br>Rating: {{center.rating}}

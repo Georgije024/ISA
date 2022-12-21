@@ -10,3 +10,8 @@
         </option>
         </select>
 </div>
+
+
+<ul class="common-list" style="width: 50%;">
+    <li class="common-list-item" *ngFor="let appointment of appointments"  (click)="onClick(appointment)">{{appointment.date | date:'HH:mm'}}</li>
+ </ul>

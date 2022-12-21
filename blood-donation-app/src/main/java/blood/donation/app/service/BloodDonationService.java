@@ -1,7 +1,11 @@
 package blood.donation.app.service;
 
+import blood.donation.app.dto.AppointmentDTO;
+import blood.donation.app.mapper.AppointmentMapper;
 import blood.donation.app.model.Appointment;
+import blood.donation.app.model.MedicalCenter;
 import blood.donation.app.repository.AppointmentRepository;
+import blood.donation.app.repository.MedicalCenterRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -12,9 +16,13 @@ import java.util.*;
 @Service
 public class BloodDonationService {
     private final AppointmentRepository appointmentRepository;
+    private final MedicalCenterRepository medicalCenterRepository;
+    private AppointmentMapper appointmentMapper = new AppointmentMapper();
 
-    public BloodDonationService(AppointmentRepository appointmentRepository) {
+
+    public BloodDonationService(AppointmentRepository appointmentRepository, MedicalCenterRepository medicalCenterRepository) {
         this.appointmentRepository = appointmentRepository;
+        this.medicalCenterRepository = medicalCenterRepository;
     }
 
     public List<String> getBloodDonationDays(){
@@ -39,7 +47,6 @@ public class BloodDonationService {
             days.add(date);
             cal.add(Calendar.DATE,1);
         }
-        createAppointments();
     return days;
 
     }
@@ -63,37 +70,42 @@ public class BloodDonationService {
     }
 
     public String createAppointments(){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        Calendar start = Calendar.getInstance();
-        Calendar end = Calendar.getInstance();
+        List<MedicalCenter> medicalCenters = medicalCenterRepository.findAll();
 
-        for(int i = 0; i <5; i++){
-            if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
-                break;
-            }
-            if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
-                continue;
-            }
+        for(MedicalCenter medicalCenter : medicalCenters) {
 
-            start.set(Calendar.HOUR_OF_DAY, 8);
-            start.set(Calendar.MINUTE,0);
-            start.set(Calendar.SECOND,0);
-            start.set(Calendar.MILLISECOND,0);
-            end.set(Calendar.HOUR_OF_DAY, 16);
-            end.set(Calendar.MINUTE,0);
-            end.set(Calendar.SECOND,0);
-            end.set(Calendar.MILLISECOND,0);
-            LocalDateTime startApp = start.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            LocalDateTime endApp = end.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Calendar start = Calendar.getInstance();
+            Calendar end = Calendar.getInstance();
 
-            while(startApp.isBefore(endApp)){
-                Appointment appointment = new Appointment();
-                appointment.setDate(java.util.Date.from(startApp.atZone(ZoneId.systemDefault()).toInstant()));
-                appointmentRepository.save(appointment);
-                startApp = startApp.plusMinutes(30);
-            }
+            for (int i = 0; i < 5; i++) {
+                if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+                    break;
+                }
+                if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                    continue;
+                }
+
+                start.set(Calendar.HOUR_OF_DAY, 8);
+                start.set(Calendar.MINUTE, 0);
+                start.set(Calendar.SECOND, 0);
+                start.set(Calendar.MILLISECOND, 0);
+                end.set(Calendar.HOUR_OF_DAY, 16);
+                end.set(Calendar.MINUTE, 0);
+                end.set(Calendar.SECOND, 0);
+                end.set(Calendar.MILLISECOND, 0);
+                LocalDateTime startApp = start.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                LocalDateTime endApp = end.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+                while (startApp.isBefore(endApp)) {
+                    Appointment appointment = new Appointment();
+                    appointment.setDate(java.util.Date.from(startApp.atZone(ZoneId.systemDefault()).toInstant()));
+                    appointment.setMedicalCenter(medicalCenter);
+                    appointmentRepository.save(appointment);
+                    startApp = startApp.plusMinutes(30);
+                }
 
 //            for(LocalDateTime date = startApp; date.isBefore(endApp); date.plusHours(1)){
 //                Appointment appointment = new Appointment();
@@ -101,12 +113,24 @@ public class BloodDonationService {
 //                appointmentRepository.save(appointment);
 //                date.plusMinutes(30);
 //            }
-            cal.add(Calendar.DATE,1);
-            start.add(Calendar.DATE,1);
-            end.add(Calendar.DATE,1);
+                cal.add(Calendar.DATE, 1);
+                start.add(Calendar.DATE, 1);
+                end.add(Calendar.DATE, 1);
+            }
         }
-
         return "true";
+    }
+
+    public List<AppointmentDTO> getAvaliableAppointments(Long id) {
+        List<Appointment> appointments = appointmentRepository.findAll();
+        List<Appointment> returnValue = new ArrayList<Appointment>();
+
+        for(Appointment appointment : appointments){
+            if(appointment.getMedicalCenter().getId().equals(id) && appointment.isTaken()==false){
+                returnValue.add(appointment);
+            }
+        }
+        return appointmentMapper.entityListToDtoList(returnValue);
     }
 
 }

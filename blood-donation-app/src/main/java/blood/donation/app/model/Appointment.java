@@ -20,10 +20,10 @@ public class Appointment {
     private Long id;
     @Column
     private Date date;
-    @Column
-    private Long userId;
-    @Column
-    private Long medicalCenterId;
+    @OneToOne
+    private User user;
+    @OneToOne
+    private MedicalCenter medicalCenter;
     @Column
     private boolean taken = false;
 }

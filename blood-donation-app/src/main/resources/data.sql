@@ -40,3 +40,4 @@ insert into country_city (country_id, city_id) values (3, 3);
 insert into medical_center (id, name, address_id, rating) values (1, 'Zdravomed', 1, 4);
 insert into medical_center (id, name, address_id, rating) values (2, 'Jugolab', 2, 5);
 insert into medical_center (id, name, address_id, rating) values (3, 'Krv', 3, 2);
+

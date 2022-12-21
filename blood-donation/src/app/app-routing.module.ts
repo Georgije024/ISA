@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'center', component: CenterComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'form', component: FormComponent},
-  {path: 'donation', component: BlooddonationComponent}
+  {path: 'donation', component: BlooddonationComponent} 
 ];
 
 @NgModule({
