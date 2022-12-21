@@ -27,4 +27,10 @@ public class UserController {
         }
         return new ResponseEntity<>(userService.saveUser(user),HttpStatus.OK);
     }
+
+    @PostMapping("/login")
+    public String loginUser(){
+        String aa = "11";
+        return aa;
+    }
 }

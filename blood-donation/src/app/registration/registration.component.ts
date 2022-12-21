@@ -14,42 +14,42 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class RegistrationComponent implements OnInit {
   registerForm!: FormGroup;
-  alert: boolean = false;
+  submitted = false;
   
-  constructor(private registrationService: RegistrationserviceService,
-        private formBuilder: FormBuilder,
-        private router: Router,) { }
+  constructor(private formBuilder: FormBuilder, private registrationService: RegistrationserviceService) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       jmbg: ['', Validators.required],
       job: ['', Validators.required],
       biography: ['', Validators.required],
-      gender: ['', Validators.required]
+      
   });
   }
 
+  get f() { return this.registerForm.controls; }
 
-  onSubmit(){
-    if (this.registerForm.invalid) {
-      this.alert = true;  
-      return;
+    onSubmit() {
+        this.submitted = true;
+        if (this.registerForm.invalid) {
+            return;
+        }
+
+        this.registrationService.registerUser(this.registerForm.value).subscribe(data=>{
+        },error=>alert("Neuspesna registracija"))
     }
 
-    this.registrationService.registerUser(this.registerForm.value).subscribe(
-      (response: User) => {
-        //this.user = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
+    onReset() {
+        this.submitted = false;
+        this.registerForm.reset();
+    }
 
-
-  }
 }
+
+

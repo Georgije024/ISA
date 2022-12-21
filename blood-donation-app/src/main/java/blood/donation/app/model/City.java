@@ -18,9 +18,9 @@ public class City {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addressList;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Country country;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;

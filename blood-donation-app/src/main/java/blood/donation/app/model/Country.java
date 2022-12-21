@@ -17,7 +17,7 @@ public class Country {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @Column(nullable = false)
     private List<City> city;
     @Column(columnDefinition = "integer default 0")

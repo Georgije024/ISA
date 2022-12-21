@@ -10,6 +10,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form/form.component';
 import { BlooddonationComponent } from './blooddonation/blooddonation.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { BlooddonationComponent } from './blooddonation/blooddonation.component'
     CenterComponent,
     RegistrationComponent,
     FormComponent,
-    BlooddonationComponent
+    BlooddonationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

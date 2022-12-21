@@ -20,7 +20,7 @@ public class Address {
     private String street;
     @Column(nullable = false)
     private String streetNumber;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private City city;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;

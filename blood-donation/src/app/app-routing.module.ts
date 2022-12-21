@@ -4,6 +4,7 @@ import { BlooddonationComponent } from './blooddonation/blooddonation.component'
 import { CenterComponent } from './center/center.component';
 import { FormComponent } from './form/form.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 
 const routes: Routes = [
@@ -11,7 +12,8 @@ const routes: Routes = [
   {path: 'center', component: CenterComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'form', component: FormComponent},
-  {path: 'donation', component: BlooddonationComponent} 
+  {path: 'donation', component: BlooddonationComponent},
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({

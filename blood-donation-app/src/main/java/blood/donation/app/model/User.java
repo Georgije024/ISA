@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Entity
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String email;
@@ -27,7 +28,7 @@ public class User {
     private String phoneNumber;
     @Column
     private String jmbg;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     @Column
     private Gender gender;

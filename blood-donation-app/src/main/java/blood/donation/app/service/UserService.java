@@ -1,5 +1,7 @@
 package blood.donation.app.service;
 
+import blood.donation.app.model.Address;
+import blood.donation.app.model.Gender;
 import blood.donation.app.model.User;
 import blood.donation.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
