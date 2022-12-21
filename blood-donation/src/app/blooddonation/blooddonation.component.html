@@ -1,0 +1,12 @@
+<h3 style="text-align: center;margin-top: 2%; ">Donacija krvi</h3>
+
+
+<div id="date-select">
+    <label for="booked-date">Izaberi datum:</label>
+    <i class="fa fa-calendar" aria-hidden="true"></i>
+    <select ngModel name="booking_date" id="booked-date" (ngModelChange)="ChangingValue($event)">
+        <option  *ngFor="let day of days" value="{{day.substr(0,10)}}">
+            {{day}}
+        </option>
+        </select>
+</div>

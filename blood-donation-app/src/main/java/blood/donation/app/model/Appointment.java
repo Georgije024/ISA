@@ -4,24 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class MedicalCenter {
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private String name;
-    @OneToOne
-    private Address address;
-    @Column(columnDefinition = "integer default 0")
-    private Boolean isDeleted = false;
     @Column
-    private double rating;
+    private Date date;
+    @Column
+    private Long userId;
+    @Column
+    private Long medicalCenterId;
+    @Column
+    private boolean taken = false;
 }
