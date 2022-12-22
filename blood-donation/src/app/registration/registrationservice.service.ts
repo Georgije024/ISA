@@ -14,7 +14,10 @@ export class RegistrationserviceService {
 
   registerUser(user: User): Observable<Object> {
     console.log(user)
-      return this.http.post(`${this.apiServerUrl}/user/register`,user);
+      return this.http.post<User>(`${this.apiServerUrl}/user/register`,user);
   }
   
+  public getUser(userId: number){
+    return this.http.get<User>(`${this.apiServerUrl}/user/${userId}`);
+  }
 }

@@ -41,3 +41,4 @@ insert into medical_center (id, name, address_id, rating) values (1, 'Zdravomed'
 insert into medical_center (id, name, address_id, rating) values (2, 'Jugolab', 2, 5);
 insert into medical_center (id, name, address_id, rating) values (3, 'Krv', 3, 2);
 
+

@@ -4,8 +4,10 @@ import blood.donation.app.dto.AppointmentDTO;
 import blood.donation.app.mapper.AppointmentMapper;
 import blood.donation.app.model.Appointment;
 import blood.donation.app.model.MedicalCenter;
+import blood.donation.app.model.User;
 import blood.donation.app.repository.AppointmentRepository;
 import blood.donation.app.repository.MedicalCenterRepository;
+import blood.donation.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -17,12 +19,15 @@ import java.util.*;
 public class BloodDonationService {
     private final AppointmentRepository appointmentRepository;
     private final MedicalCenterRepository medicalCenterRepository;
+
+    private final UserRepository userRepository;
     private AppointmentMapper appointmentMapper = new AppointmentMapper();
 
 
-    public BloodDonationService(AppointmentRepository appointmentRepository, MedicalCenterRepository medicalCenterRepository) {
+    public BloodDonationService(AppointmentRepository appointmentRepository, MedicalCenterRepository medicalCenterRepository, UserRepository userRepository) {
         this.appointmentRepository = appointmentRepository;
         this.medicalCenterRepository = medicalCenterRepository;
+        this.userRepository = userRepository;
     }
 
     public List<String> getBloodDonationDays(){
@@ -133,4 +138,15 @@ public class BloodDonationService {
         return appointmentMapper.entityListToDtoList(returnValue);
     }
 
+    public void takeAppointment(Long appointmentId, Long userId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).get();
+        User user = userRepository.findById(userId).get();
+
+        user.setBloodDonationDate(new Date());
+        userRepository.save(user);
+
+        appointment.setTaken(true);
+        appointment.setUser(user);
+        appointmentRepository.save(appointment);
+    }
 }

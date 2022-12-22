@@ -68,6 +68,8 @@ export class CenterComponent implements OnInit {
   }
 
   clickedCenter(center: Center){
+    console.log(center.id)
+    this.router.navigate(['/donation'], {queryParams:{centerId: center.id}});
   }
 
 }

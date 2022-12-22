@@ -4,6 +4,9 @@ import { BlooddonationserviceService } from './blooddonationservice.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Center } from '../model/medicalCenter';
 import { Appointment } from '../model/appointment';
+import { CenterService } from '../center/center.service';
+import { RegistrationserviceService } from '../registration/registrationservice.service';
+import { User } from '../model/User';
 
 
 @Component({
@@ -14,13 +17,35 @@ import { Appointment } from '../model/appointment';
 export class BlooddonationComponent implements OnInit {
   days: String[]= [];
   appointments: Appointment[] = [];
-  center?: Center;
+  center: Center;
+  user: User;
   appointmentsFiltered: Appointment[] = [];
+  centerId: number = -1;
+  alert: boolean = false;
 
-  constructor(private bloodDonationService: BlooddonationserviceService,private route: ActivatedRoute) { }
+  constructor(private bloodDonationService: BlooddonationserviceService,private route: ActivatedRoute, private centerService: CenterService,private regService: RegistrationserviceService) { }
 
   ngOnInit(): void {
+    this.centerId=  Number(this.route.snapshot.queryParamMap.get('centerId'));
+    this.getCenter();
+    this.getUser();
     this.getDays();
+  }
+  getUser() {
+    this.regService.getUser(1).subscribe(
+      (response: User) => {
+        this.user = response;
+        if(this.user.survey==false)
+          this.alert=true;
+          const date = new Date()
+          date.setMonth(date.getMonth() -6)
+        if(new Date(String(this.user.bloodDonationDate)).getTime() > date.getTime())
+          this.alert=true;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
   public getDays(): void {
@@ -34,8 +59,19 @@ export class BlooddonationComponent implements OnInit {
     );
   }
 
+  public getCenter(): void {
+    this.centerService.getCenter(this.centerId).subscribe(
+      (response: Center) => {
+        this.center = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
   ChangingValue(event: Event){
-    this.bloodDonationService.getAvaliableAppointments(1).subscribe(
+    this.bloodDonationService.getAvaliableAppointments(this.centerId).subscribe(
       (response: Appointment[]) => {
         this.appointments = this.filterAppointments(response,event);
         console.log(this.appointments)
@@ -66,6 +102,7 @@ export class BlooddonationComponent implements OnInit {
   }
 
   onClick(event: Appointment) {
-    this.bloodDonationService.takeAppointment(event.id,1).subscribe();
+    console.log('aaaa')
+    this.bloodDonationService.takeAppointment(event.id,this.user.id).subscribe();
   }
 }

@@ -15,8 +15,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class RegistrationComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
+  user?: User;
   
-  constructor(private formBuilder: FormBuilder, private registrationService: RegistrationserviceService) { }
+  constructor(private formBuilder: FormBuilder, private registrationService: RegistrationserviceService, private router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -42,8 +43,11 @@ export class RegistrationComponent implements OnInit {
         }
 
         this.registrationService.registerUser(this.registerForm.value).subscribe(data=>{
+         // this.user = data;
+          this.router.navigate(['home']);
         },error=>alert("Neuspesna registracija"))
     }
+
 
     onReset() {
         this.submitted = false;

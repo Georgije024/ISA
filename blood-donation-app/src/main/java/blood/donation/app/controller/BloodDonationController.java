@@ -35,6 +35,12 @@ public class BloodDonationController {
         return null;
     }
 
+    @PostMapping("/takeAppointment/{appointmentId}/{userId}")
+    public ResponseEntity<String> takeAppointment(@PathVariable("appointmentId") String appointmentId,@PathVariable("userId") String userId){
+        bloodDonationService.takeAppointment(Long.valueOf(appointmentId),Long.valueOf(userId));
+        return null;
+    }
+
     @GetMapping("/appointments/{centerId}")
     public List<AppointmentDTO> getAvaliableAppointments(@PathVariable("centerId") String id) {
         List<AppointmentDTO> appointments = bloodDonationService.getAvaliableAppointments(Long.valueOf(id));

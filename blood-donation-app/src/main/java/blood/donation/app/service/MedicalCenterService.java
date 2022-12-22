@@ -21,4 +21,8 @@ public class MedicalCenterService {
     public List<MedicalCenterDTO> getCenters(){
         return medicalCenterMapper.entityListToDtoList(medicalCenterRepository.findAll());
     }
+
+    public MedicalCenterDTO getCenter(Long Id) {
+        return medicalCenterMapper.entityToDto(medicalCenterRepository.findById(Id).get());
+    }
 }

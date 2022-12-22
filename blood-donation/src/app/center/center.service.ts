@@ -16,4 +16,8 @@ export class CenterService {
   public getCenters(): Observable<Center[]>{
     return this.http.get<Center[]>(`${this.apiServerUrl}/center`);
   }
+
+  public getCenter(centerId: number){
+    return this.http.get<Center>(`${this.apiServerUrl}/center/${centerId}`);
+  }
 }

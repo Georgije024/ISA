@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -36,6 +37,12 @@ public class User {
     private String job;
     @Column
     private String biography;
+    @Column
+    private UserRole userRole;
+    @Column
+    private boolean survey = false;
+    @Column
+    private Date bloodDonationDate;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
 
