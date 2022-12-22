@@ -131,7 +131,7 @@ public class BloodDonationService {
         List<Appointment> returnValue = new ArrayList<Appointment>();
 
         for(Appointment appointment : appointments){
-            if(appointment.getMedicalCenter().getId().equals(id) && appointment.isTaken()==false){
+            if(appointment.getMedicalCenter().getId().equals(id) && appointment.isTaken()==false && appointment.getDate().after(new Date())){
                 returnValue.add(appointment);
             }
         }
@@ -142,11 +142,32 @@ public class BloodDonationService {
         Appointment appointment = appointmentRepository.findById(appointmentId).get();
         User user = userRepository.findById(userId).get();
 
-        user.setBloodDonationDate(new Date());
-        userRepository.save(user);
-
         appointment.setTaken(true);
         appointment.setUser(user);
+        appointmentRepository.save(appointment);
+
+        user.setBloodDonationDate(new Date());
+        userRepository.save(user);
+    }
+
+    public List<AppointmentDTO> getAppointments(Long userId) {
+        List<Appointment> appointments = appointmentRepository.findAll();
+        List<AppointmentDTO> appointmentDTOS = new ArrayList<AppointmentDTO>();
+
+        for(Appointment appointment : appointments){
+            if(appointment.getUser()!=null) {
+                if (appointment.getUser().getId().equals(userId)) {
+                    appointmentDTOS.add(appointmentMapper.entityToDto(appointment));
+                }
+            }
+        }
+        return appointmentDTOS;
+    }
+
+    public void cancelApointment(Long appId) {
+        Appointment appointment = appointmentRepository.findById(appId).get();
+        appointment.setTaken(false);
+        appointment.setUser(null);
         appointmentRepository.save(appointment);
     }
 }

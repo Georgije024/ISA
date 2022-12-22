@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BlooddonationserviceService } from './blooddonationservice.service';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Center } from '../model/medicalCenter';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MedicalCenterDTO } from '../model/medicalCenterDTO';
 import { Appointment } from '../model/appointment';
 import { CenterService } from '../center/center.service';
 import { RegistrationserviceService } from '../registration/registrationservice.service';
@@ -17,13 +17,16 @@ import { User } from '../model/User';
 export class BlooddonationComponent implements OnInit {
   days: String[]= [];
   appointments: Appointment[] = [];
-  center: Center;
+  center: MedicalCenterDTO;
   user: User;
   appointmentsFiltered: Appointment[] = [];
   centerId: number = -1;
   alert: boolean = false;
+  alertDonation: boolean = false;
+  appointmentId: number = -1;
+  enableButton: boolean = false;
 
-  constructor(private bloodDonationService: BlooddonationserviceService,private route: ActivatedRoute, private centerService: CenterService,private regService: RegistrationserviceService) { }
+  constructor(private bloodDonationService: BlooddonationserviceService, private router: Router,private route: ActivatedRoute, private centerService: CenterService,private regService: RegistrationserviceService) { }
 
   ngOnInit(): void {
     this.centerId=  Number(this.route.snapshot.queryParamMap.get('centerId'));
@@ -36,10 +39,6 @@ export class BlooddonationComponent implements OnInit {
       (response: User) => {
         this.user = response;
         if(this.user.survey==false)
-          this.alert=true;
-          const date = new Date()
-          date.setMonth(date.getMonth() -6)
-        if(new Date(String(this.user.bloodDonationDate)).getTime() > date.getTime())
           this.alert=true;
       },
       (error: HttpErrorResponse) => {
@@ -61,7 +60,7 @@ export class BlooddonationComponent implements OnInit {
 
   public getCenter(): void {
     this.centerService.getCenter(this.centerId).subscribe(
-      (response: Center) => {
+      (response: MedicalCenterDTO) => {
         this.center = response;
       },
       (error: HttpErrorResponse) => {
@@ -102,7 +101,22 @@ export class BlooddonationComponent implements OnInit {
   }
 
   onClick(event: Appointment) {
+    this.appointmentId = event.id;
+    
+   const date = new Date();
+   date.setMonth(date.getMonth() -6);
+   if(new Date(String(this.user.bloodDonationDate)).getTime() > date.getTime()){
+    this.alertDonation=true;
+    return;
+   }
+
+  this.enableButton = true;
+
+  }
+
+  takeAppointment() {
     console.log('aaaa')
-    this.bloodDonationService.takeAppointment(event.id,this.user.id).subscribe();
+    this.bloodDonationService.takeAppointment(this.appointmentId,this.user.id).subscribe();
+    this.router.navigate(['/center']);
   }
 }

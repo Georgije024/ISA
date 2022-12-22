@@ -1,0 +1,15 @@
+<br><br><br>
+
+<div class="container">
+    <ng-container *ngFor="let appointment of appointments">
+        <div class="card col-md-12" (click)="clickedAppointment(appointment)">
+            {{appointment.medicalCenterDTO?.name}}
+            <br>
+            {{appointment.date | date:'dd/MM/yyyy HH:mm'}}
+        </div>
+        <br>
+    </ng-container>
+</div>
+
+<div *ngIf="alert" style="text-align: center;">The term has expired or there are less than 24 hours left until the term begins.</div>
+<button type="button" [disabled]="!enableButton" class="btn btn-primary" style="margin:auto; display: block; margin-top: 100px;" (click)="cancelAppointment()">Cancel appointmet</button>

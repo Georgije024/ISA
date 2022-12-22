@@ -41,9 +41,24 @@ public class BloodDonationController {
         return null;
     }
 
+    @PostMapping("/cancelAppointment/{appId}")
+    public ResponseEntity<String> cancelApointment(@PathVariable("appId") String appId){
+        bloodDonationService.cancelApointment(Long.valueOf(appId));
+        return null;
+    }
+
     @GetMapping("/appointments/{centerId}")
     public List<AppointmentDTO> getAvaliableAppointments(@PathVariable("centerId") String id) {
         List<AppointmentDTO> appointments = bloodDonationService.getAvaliableAppointments(Long.valueOf(id));
         return appointments;
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByUser(@PathVariable("userId") String userId){
+        List<AppointmentDTO> appointmentDTOS = bloodDonationService.getAppointments(Long.valueOf(userId));
+        if(appointmentDTOS != null){
+            return new ResponseEntity<>(appointmentDTOS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,4 +1,4 @@
-export interface Center {
+export interface MedicalCenterDTO {
     id: number;
     name: string;
     rating: number

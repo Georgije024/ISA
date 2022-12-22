@@ -7,7 +7,7 @@
 
 
  <div *ngIf="alert; else loggedOut">
-    You have not completed a survey or donated blood in the last 6 months.
+    You have not completed a survey.
   </div>
   
   <ng-template #loggedOut>
@@ -25,4 +25,9 @@
     <ul class="common-list" style="width: 50%;">
         <li class="common-list-item" *ngFor="let appointment of appointments"  (click)="onClick(appointment)">{{appointment.date | date:'HH:mm'}}</li>
      </ul>
+<br><br>
+     <div *ngIf="alertDonation" style="text-align: center;">You donated blood in past six months.</div>
+
+     <button type="button" [disabled]="!enableButton" class="btn btn-primary" style="margin:auto; display: block; margin-top: 100px;" (click)="takeAppointment()">Take appointmet</button>
+
   </ng-template>

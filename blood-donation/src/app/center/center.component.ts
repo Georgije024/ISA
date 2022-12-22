@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Center } from '../model/medicalCenter';
+import { MedicalCenterDTO } from '../model/medicalCenterDTO';
 import { CenterService } from './center.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./center.component.css']
 })
 export class CenterComponent implements OnInit {
-  centers: Center[] = [];
+  centers: MedicalCenterDTO[] = [];
   sortValues: string[] = ['By City', 'By Name', 'By Rating Ascending','By Rating Descending'];
 
   constructor(private service: CenterService, private router: Router) { }
@@ -21,7 +21,7 @@ export class CenterComponent implements OnInit {
 
   getCenters(){
     this.service.getCenters().subscribe(
-      (response: Center[]) => {
+      (response: MedicalCenterDTO[]) => {
         this.centers = response;
       },
       (error: HttpErrorResponse) => {
@@ -67,7 +67,7 @@ export class CenterComponent implements OnInit {
     this.centers.sort((a,b) => b.rating-a.rating);
   }
 
-  clickedCenter(center: Center){
+  clickedCenter(center: MedicalCenterDTO){
     console.log(center.id)
     this.router.navigate(['/donation'], {queryParams:{centerId: center.id}});
   }

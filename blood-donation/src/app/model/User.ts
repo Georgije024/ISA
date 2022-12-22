@@ -1,4 +1,5 @@
 import { Address } from "./address";
+import { Appointment } from "./appointment";
 
 export class User{
     id: number;
@@ -14,8 +15,9 @@ export class User{
     biography: string;
     survey: boolean;
     bloodDonationDate: Date;
+    appointments: Appointment[]
 
-    constructor(id:number,email:string,password:string,name:string,surname:string,address:Address,phoneNumber:string,jmbg:string,gender:number,job:string,biography:string,survey:boolean,bloodDonationDate:Date){
+    constructor(id:number,email:string,password:string,name:string,surname:string,address:Address,phoneNumber:string,jmbg:string,gender:number,job:string,biography:string,survey:boolean,bloodDonationDate:Date,appointments:Appointment[]){
         this.id = id;
         this.email = email;
         this.password = password;
@@ -29,5 +31,6 @@ export class User{
         this.biography = biography;
         this.survey = survey;
         this.bloodDonationDate = bloodDonationDate;
+        this.appointments = appointments;
     }
 }
