@@ -18,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(unique=true)
     private String email;
     @Column
     private String password;
@@ -40,6 +40,8 @@ public class User {
     private String biography;
     @Column
     private UserRole userRole;
+    @OneToMany
+    private List<Appointment> appointments;
     @Column
     private boolean survey = false;
     @Column

@@ -1,18 +1,26 @@
 package blood.donation.app.controller;
 
+import blood.donation.app.model.AuthRequest;
 import blood.donation.app.model.LoginUser;
 import blood.donation.app.model.User;
 import blood.donation.app.service.UserService;
+import blood.donation.app.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -42,12 +50,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> checkUser(@RequestBody LoginUser loginUser){
-        User user = userService.checkUser(loginUser);
-        if(user != null){
-            return new ResponseEntity<>(user, HttpStatus.OK);
+    public User login(@RequestBody LoginUser loginUser){
+        return userService.login(loginUser);
+    }
+
+    @PostMapping("/authenticate")
+    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception{
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+            );
+        }catch(Exception e){
+           throw new Exception("Invalid username/password");
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        User user = userService.getByEmail(authRequest.getEmail());
+        return jwtUtil.generateToken(authRequest.getEmail(),user.getUserRole().name(),user.getId());
     }
 
 }

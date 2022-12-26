@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   login(event: any) {
     event.preventDefault();
-    this.loginService.login(this.username, this.password).subscribe((data: any) => {
+    this.loginService.checkUser(this.username, this.password).subscribe((data: any) => {
       this.router.navigate(['home']);
       this.invalidLogin = false;
     }, error => {
