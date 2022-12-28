@@ -6,20 +6,22 @@ import { CenterComponent } from './center/center.component';
 import { ComplaintUserComponent } from './complaint-user/complaint-user.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { FormComponent } from './form/form.component';
+import { AuthGuard } from './helpers/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { UserRole } from './model/role';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'center', component: CenterComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'form', component: FormComponent},
-  {path: 'donation', component: BlooddonationComponent},
+  {path: 'donation', component: BlooddonationComponent,canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'appointments', component: AppointmentsComponent},
-  {path: 'complaint', component:ComplaintComponent},
-  {path: 'complaintUser', component:ComplaintUserComponent}
+  {path: 'complaint', component:ComplaintComponent, canActivate: [AuthGuard],data: { roles: [UserRole.Admin]}},
+  {path: 'complaintUser', component:ComplaintUserComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

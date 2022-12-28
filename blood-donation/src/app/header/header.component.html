@@ -13,15 +13,18 @@
           <a class="nav-link" routerLink="/appointments">Appointments</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/complaint">Complaint</a>
+          <a class="nav-link" routerLink="/complaint" *ngIf="!isAdmin">Complaint</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/registration">Registration</a>
+          <a class="nav-link" routerLink="/home" *ngIf="isLogedIn" (click)="logout()">Logut</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/login">Login</a>
+          <a class="nav-link" routerLink="/registration" *ngIf="!isLogedIn">Registration</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login" *ngIf="!isLogedIn">Login</a>
         </li>
       </ul>
     </div>    
