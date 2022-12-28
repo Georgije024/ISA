@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { BlooddonationComponent } from './blooddonation/blooddonation.component';
 import { CenterComponent } from './center/center.component';
+import { ComplaintUserComponent } from './complaint-user/complaint-user.component';
+import { ComplaintComponent } from './complaint/complaint.component';
 import { FormComponent } from './form/form.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -15,7 +17,9 @@ const routes: Routes = [
   {path: 'form', component: FormComponent},
   {path: 'donation', component: BlooddonationComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'appointments', component: AppointmentsComponent}
+  {path: 'appointments', component: AppointmentsComponent},
+  {path: 'complaint', component:ComplaintComponent},
+  {path: 'complaintUser', component:ComplaintUserComponent}
 ];
 
 @NgModule({

@@ -19,6 +19,7 @@ export class FormComponent implements OnInit {
     this.regService.getUser(1).subscribe(
       (response: User) => {
         this.user = response;
+        console.log(this.user)
         if(this.user.survey)
           this.survey = true;
       },

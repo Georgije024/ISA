@@ -4,9 +4,11 @@ import blood.donation.app.dto.AppointmentDTO;
 import blood.donation.app.mapper.AppointmentMapper;
 import blood.donation.app.model.Appointment;
 import blood.donation.app.model.MedicalCenter;
+import blood.donation.app.model.Staff;
 import blood.donation.app.model.User;
 import blood.donation.app.repository.AppointmentRepository;
 import blood.donation.app.repository.MedicalCenterRepository;
+import blood.donation.app.repository.StaffRepository;
 import blood.donation.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +21,15 @@ import java.util.*;
 public class BloodDonationService {
     private final AppointmentRepository appointmentRepository;
     private final MedicalCenterRepository medicalCenterRepository;
-
+private final StaffRepository staffRepository;
     private final UserRepository userRepository;
     private AppointmentMapper appointmentMapper = new AppointmentMapper();
 
 
-    public BloodDonationService(AppointmentRepository appointmentRepository, MedicalCenterRepository medicalCenterRepository, UserRepository userRepository) {
+    public BloodDonationService(AppointmentRepository appointmentRepository, MedicalCenterRepository medicalCenterRepository, StaffRepository staffRepository, UserRepository userRepository) {
         this.appointmentRepository = appointmentRepository;
         this.medicalCenterRepository = medicalCenterRepository;
+        this.staffRepository = staffRepository;
         this.userRepository = userRepository;
     }
 
@@ -76,6 +79,7 @@ public class BloodDonationService {
 
     public String createAppointments(){
         List<MedicalCenter> medicalCenters = medicalCenterRepository.findAll();
+        List<Staff> staff = staffRepository.findAll();
 
         for(MedicalCenter medicalCenter : medicalCenters) {
 
@@ -108,6 +112,7 @@ public class BloodDonationService {
                     Appointment appointment = new Appointment();
                     appointment.setDate(java.util.Date.from(startApp.atZone(ZoneId.systemDefault()).toInstant()));
                     appointment.setMedicalCenter(medicalCenter);
+                    appointment.setStaff(staff);
                     appointmentRepository.save(appointment);
                     startApp = startApp.plusMinutes(30);
                 }
@@ -123,7 +128,36 @@ public class BloodDonationService {
                 end.add(Calendar.DATE, 1);
             }
         }
+        createAppointmentsUser1(staff);
         return "true";
+    }
+
+    private void createAppointmentsUser1(List<Staff> staff){
+        MedicalCenter medicalCenter = medicalCenterRepository.findById(Long.valueOf(1)).get();
+        User user = userRepository.findById(Long.valueOf(1)).get();
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(2021, 5, 25,8,30);
+        Appointment appointment = new Appointment();
+        appointment.setDate(cal.getTime());
+        appointment.setMedicalCenter(medicalCenter);
+        appointment.setUser(user);
+        appointment.setStaff(staff);
+        appointmentRepository.save(appointment);
+
+        cal.set(2022, 2, 14,11,00);
+        Appointment appointment1 = new Appointment();
+        appointment1.setDate(cal.getTime());
+        appointment1.setMedicalCenter(medicalCenter);
+        appointment1.setUser(user);
+        appointment1.setStaff(staff);
+        appointmentRepository.save(appointment);
+
+        List<Appointment> appointments = user.getAppointments();
+        appointments.add(appointment);
+        appointments.add(appointment1);
+        user.setAppointments(appointments);
+        userRepository.save(user);
     }
 
     public List<AppointmentDTO> getAvaliableAppointments(Long id) {
@@ -147,6 +181,13 @@ public class BloodDonationService {
         appointmentRepository.save(appointment);
 
         user.setBloodDonationDate(new Date());
+
+        List<Appointment> appointments = user.getAppointments();
+        if(appointment==null){
+            appointments = new ArrayList<Appointment>();
+        }
+        appointments.add(appointment);
+        user.setAppointments(appointments);
         userRepository.save(user);
     }
 

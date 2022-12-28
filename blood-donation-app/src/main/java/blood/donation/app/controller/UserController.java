@@ -49,11 +49,6 @@ public class UserController {
         return userService.getUser(Long.valueOf(userId));
     }
 
-    @PostMapping("/login")
-    public User login(@RequestBody LoginUser loginUser){
-        return userService.login(loginUser);
-    }
-
     @PostMapping("/authenticate")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception{
         try {

@@ -12,6 +12,8 @@ import { FormComponent } from './form/form.component';
 import { BlooddonationComponent } from './blooddonation/blooddonation.component';
 import { LoginComponent } from './login/login.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
+import { ComplaintComponent } from './complaint/complaint.component';
+import { ComplaintUserComponent } from './complaint-user/complaint-user.component';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { AppointmentsComponent } from './appointments/appointments.component';
     FormComponent,
     BlooddonationComponent,
     LoginComponent,
-    AppointmentsComponent
+    AppointmentsComponent,
+    ComplaintComponent,
+    ComplaintUserComponent
   ],
   imports: [
     BrowserModule,

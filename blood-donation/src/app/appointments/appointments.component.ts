@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Appointment } from '../model/appointment';
 import { User } from '../model/User';
 import { RegistrationserviceService } from '../registration/registrationservice.service';
@@ -17,7 +18,7 @@ export class AppointmentsComponent implements OnInit {
   appointment: Appointment;
   alert: boolean = false;
   
-  constructor(private regService: RegistrationserviceService, private appService: AppointmentsService) { }
+  constructor(private regService: RegistrationserviceService, private appService: AppointmentsService, private router: Router) { }
 
   ngOnInit(): void {
     this.getUser();
@@ -48,9 +49,21 @@ export class AppointmentsComponent implements OnInit {
     );
   }
 
+  checkStatus(app: Appointment){
+    const date = new Date()
+    if(new Date(String(app.date)).getTime() < date.getTime()){
+      return true;
+    }
+    return false;
+  }
+
+  // clickedAppointment(appointment: Appointment){
+  //   this.appointment = appointment;
+  //   this.enableButton=true;  
+  // }
+
   clickedAppointment(appointment: Appointment){
-    this.appointment = appointment;
-    this.enableButton=true;  
+    this.router.navigate(['/complaintUser'], {queryParams:{appointmentId: appointment.id}});
   }
 
   

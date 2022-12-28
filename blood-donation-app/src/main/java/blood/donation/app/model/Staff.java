@@ -1,30 +1,30 @@
 package blood.donation.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class MedicalCenter {
+public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private String name;
-    @OneToOne
-    private Address address;
+    @Column
+    private String surname;
+    @Column
+    private String phoneNumber;
+    @Column
+    private String jmbg;
+    @Column
+    private UserRole userRole;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
-    @Column
-    private double rating;
-    @OneToMany
-    private List<User> staff;
 }

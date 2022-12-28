@@ -2,7 +2,7 @@
 
 <div class="container">
     <ng-container *ngFor="let appointment of appointments">
-        <div class="card col-md-12" (click)="clickedAppointment(appointment)">
+        <div class="card col-md-12" [ngClass]="{'selected' : checkStatus(appointment)}" (click)="clickedAppointment(appointment)" >
             {{appointment.medicalCenterDTO?.name}}
             <br>
             {{appointment.date | date:'dd/MM/yyyy HH:mm'}}

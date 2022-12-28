@@ -11,16 +11,22 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
   private apiServerUrl = environment.apiBaseurl;
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
 
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  public checkUser(username: string, pass: string) {
+  public login(username: string, pass: string) {
     const loginUser: LoginUser = {
       email: username,
       password: pass,
     };
-    return this.http.post<User>(`${this.apiServerUrl}/user/login`,loginUser);
+    return this.http.post(`${this.apiServerUrl}/user/authenticate`,loginUser, {
+      headers: this.headers,
+      responseType: 'text',
+    });
   }
 
 }

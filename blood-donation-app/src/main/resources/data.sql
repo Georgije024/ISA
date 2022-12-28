@@ -41,4 +41,12 @@ insert into medical_center (id, name, address_id, rating) values (1, 'Zdravomed'
 insert into medical_center (id, name, address_id, rating) values (2, 'Jugolab', 2, 5);
 insert into medical_center (id, name, address_id, rating) values (3, 'Krv', 3, 2);
 
+--STAFF
 
+insert into staff (id,is_deleted,jmbg,name,phone_number,surname,user_role) values (1,0,'111','Marko','111','Markovic',2);
+insert into staff (id,is_deleted,jmbg,name,phone_number,surname,user_role) values (2,0,'222','Jovana','222','Petrovic',2);
+
+-- USER
+
+insert into user(user_id,biography,email,gender,is_deleted,jmbg,job,name,password,phone_number,surname,address_id,user_role,survey)
+values(1,'aa','javatechie',1,0,'11','1','aa','password','11','aaa',null,1,0);

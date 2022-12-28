@@ -115,7 +115,6 @@ export class BlooddonationComponent implements OnInit {
   }
 
   takeAppointment() {
-    console.log('aaaa')
     this.bloodDonationService.takeAppointment(this.appointmentId,this.user.id).subscribe();
     this.router.navigate(['/center']);
   }
