@@ -48,34 +48,32 @@ public class UserController {
     }
 
     @GetMapping("/verify")
-    public void verifyAccount(@Param("code") String code){
+    public void verifyAccount(@Param("code") String code) {
         boolean verified = userService.verify(code);
-
-    @GetMapping("/survey/{userId}")
-    public User survey(@PathVariable("userId") String userId){
-        return userService.takeSrvey(Long.valueOf(userId));
     }
-
-    @GetMapping("/{userId}")
-    public User getUser(@PathVariable("userId") String userId){
-        return userService.getUser(Long.valueOf(userId));
-    }
-
-    @PostMapping("/authenticate")
-    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception{
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
-            );
-        }catch(Exception e){
-           throw new Exception("Invalid username/password");
+        @GetMapping("/survey/{userId}")
+        public User survey (@PathVariable("userId") String userId){
+            return userService.takeSrvey(Long.valueOf(userId));
         }
-        User user = userService.getByEmail(authRequest.getEmail());
-        if(!user.isAccountVerifed()){
 
-            throw new Exception("Invalid username/password");
+        @GetMapping("/{userId}")
+        public User getUser (@PathVariable("userId") String userId){
+            return userService.getUser(Long.valueOf(userId));
         }
-        return jwtUtil.generateToken(authRequest.getEmail(),user.getUserRole().name(),user.getId());
-    }
 
+        @PostMapping("/authenticate")
+        public String generateToken (@RequestBody AuthRequest authRequest) throws Exception {
+            try {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+                );
+            } catch (Exception e) {
+                throw new Exception("Invalid username/password");
+            }
+            User user = userService.getByEmail(authRequest.getEmail());
+            if (!user.isAccountVerified()) {
+                throw new Exception("Invalid username/password");
+            }
+            return jwtUtil.generateToken(authRequest.getEmail(), user.getUserRole().name(), user.getId());
+        }
 }

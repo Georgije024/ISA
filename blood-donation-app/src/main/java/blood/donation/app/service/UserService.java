@@ -7,8 +7,6 @@ import blood.donation.app.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -54,9 +52,7 @@ public class UserService{
         mailContent += "<h3><a href=\""+ verifyURL+ "\">VERIFY</a></h3>";
         mailContent += "<p>Thank you<br>The Blood donation <p>";
 
-
         //sendMail();
-
 
         SimpleMailMessage message = new SimpleMailMessage();
 
