@@ -36,7 +36,7 @@ public class UserController {
                 return new ResponseEntity<>("Korisnik sa tom adresom vec postoji", HttpStatus.BAD_REQUEST);
             }
         }
-        return new ResponseEntity<>(userService.saveUser(user),HttpStatus.OK);
+        return new ResponseEntity<>(userService.register(user),HttpStatus.OK);
     }
 
     @GetMapping("/survey/{userId}")

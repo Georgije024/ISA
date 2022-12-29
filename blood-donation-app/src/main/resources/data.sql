@@ -48,8 +48,8 @@ insert into staff (id,is_deleted,jmbg,name,phone_number,surname,user_role) value
 
 -- USER
 
-insert into user(user_id,biography,email,gender,is_deleted,jmbg,job,name,password,phone_number,surname,address_id,user_role,survey)
-values(1,'aa','javatechie@gmail.com',1,0,'11','1','aa','password','11','aaa',null,1,0);
+insert into user(user_id,account_verified,biography,email,gender,is_deleted,jmbg,job,name,password,phone_number,surname,address_id,user_role,survey)
+values(1,1,'aa','javatechie@gmail.com',1,0,'11','1','aa','password','11','aaa',null,1,0);
 
-insert into user(user_id,biography,email,gender,is_deleted,jmbg,job,name,password,phone_number,surname,address_id,user_role,survey)
-values(2,'aa','admin@gmail.com',1,0,'11','1','aa','password','11','aaa',null,0,0);
+insert into user(user_id,account_verified,biography,email,gender,is_deleted,jmbg,job,name,password,phone_number,surname,address_id,user_role,survey)
+values(2,1,'aa','admin@gmail.com',1,0,'11','1','aa','password','11','aaa',null,0,0);
