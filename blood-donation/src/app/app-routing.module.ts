@@ -16,12 +16,12 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'center', component: CenterComponent},
   {path: 'registration', component: RegistrationComponent},
-  {path: 'form', component: FormComponent},
-  {path: 'donation', component: BlooddonationComponent,canActivate: [AuthGuard]},
+  {path: 'form', component: FormComponent,canActivate: [AuthGuard],data: { roles: [UserRole.Admin]}},
+  {path: 'donation', component: BlooddonationComponent,canActivate: [AuthGuard],data: { roles: [UserRole.Admin]}},
   {path: 'login', component: LoginComponent},
-  {path: 'appointments', component: AppointmentsComponent},
-  {path: 'complaint', component:ComplaintComponent, canActivate: [AuthGuard],data: { roles: [UserRole.Admin]}},
-  {path: 'complaintUser', component:ComplaintUserComponent, canActivate: [AuthGuard]}
+  {path: 'appointments', component: AppointmentsComponent,canActivate: [AuthGuard],data: { roles: [UserRole.Admin]}},
+  {path: 'complaint', component:ComplaintComponent, canActivate: [AuthGuard],data: { roles: [UserRole.User]}},
+  {path: 'complaintUser', component:ComplaintUserComponent, canActivate: [AuthGuard],data: { roles: [UserRole.Admin]}}
 ];
 
 @NgModule({

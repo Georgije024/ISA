@@ -7,6 +7,7 @@ import { Appointment } from '../model/appointment';
 import { CenterService } from '../center/center.service';
 import { RegistrationserviceService } from '../registration/registrationservice.service';
 import { User } from '../model/User';
+import { AuthenticationService } from '../helpers/authentication.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class BlooddonationComponent implements OnInit {
   appointmentId: number = -1;
   enableButton: boolean = false;
 
-  constructor(private bloodDonationService: BlooddonationserviceService, private router: Router,private route: ActivatedRoute, private centerService: CenterService,private regService: RegistrationserviceService) { }
+  constructor(private bloodDonationService: BlooddonationserviceService, private router: Router,private route: ActivatedRoute, private centerService: CenterService,private regService: RegistrationserviceService, private auth : AuthenticationService) { }
 
   ngOnInit(): void {
     this.centerId=  Number(this.route.snapshot.queryParamMap.get('centerId'));
@@ -35,7 +36,7 @@ export class BlooddonationComponent implements OnInit {
     this.getDays();
   }
   getUser() {
-    this.regService.getUser(1).subscribe(
+    this.regService.getUser(this.auth.userValue.id).subscribe(
       (response: User) => {
         this.user = response;
         if(this.user.survey==false)

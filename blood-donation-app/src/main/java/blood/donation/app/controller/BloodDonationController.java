@@ -2,6 +2,8 @@ package blood.donation.app.controller;
 
 import blood.donation.app.dto.AppointmentDTO;
 import blood.donation.app.model.Appointment;
+import blood.donation.app.model.AuthRequest;
+import blood.donation.app.model.Complaint;
 import blood.donation.app.model.MedicalCenter;
 import blood.donation.app.service.BloodDonationService;
 import org.springframework.http.HttpStatus;
@@ -44,6 +46,12 @@ public class BloodDonationController {
     @PostMapping("/cancelAppointment/{appId}")
     public ResponseEntity<String> cancelApointment(@PathVariable("appId") String appId){
         bloodDonationService.cancelApointment(Long.valueOf(appId));
+        return null;
+    }
+
+    @PostMapping("/makeComplaint")
+    public ResponseEntity<String> makeComplaint(@RequestBody Complaint complaint){
+        bloodDonationService.makeComplaint(complaint);
         return null;
     }
 

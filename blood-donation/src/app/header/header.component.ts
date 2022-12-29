@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit {
   }
 
   get isLogedIn(){
-    console.log(this.app.isLogedIn.id)
     if(this.app.isLogedIn.id === undefined){
       return false;
     }

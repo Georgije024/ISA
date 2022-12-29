@@ -1,5 +1,6 @@
 package blood.donation.app.controller;
 
+import blood.donation.app.dto.AppointmentDTO;
 import blood.donation.app.dto.MedicalCenterDTO;
 import blood.donation.app.model.MedicalCenter;
 import blood.donation.app.service.MedicalCenterService;
@@ -36,6 +37,15 @@ public class MedicalCenterController {
         MedicalCenterDTO medicalCenter = medicalCenterService.getCenter(Long.valueOf(centerId));
         if(medicalCenter != null){
             return new ResponseEntity<>(medicalCenter, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/appointment/{appointmentId}")
+    public ResponseEntity<AppointmentDTO> getAppointment(@PathVariable("appointmentId") String appointmentId){
+        AppointmentDTO appointmentDTO = medicalCenterService.getAppointment(Long.valueOf(appointmentId));
+        if(appointmentDTO != null){
+            return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

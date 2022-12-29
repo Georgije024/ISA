@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../helpers/authentication.service';
 import { Appointment } from '../model/appointment';
 import { User } from '../model/User';
 import { RegistrationserviceService } from '../registration/registrationservice.service';
@@ -18,7 +19,7 @@ export class AppointmentsComponent implements OnInit {
   appointment: Appointment;
   alert: boolean = false;
   
-  constructor(private regService: RegistrationserviceService, private appService: AppointmentsService, private router: Router) { }
+  constructor(private regService: RegistrationserviceService, private appService: AppointmentsService, private router: Router, private auth : AuthenticationService) { }
 
   ngOnInit(): void {
     this.getUser();
@@ -26,7 +27,7 @@ export class AppointmentsComponent implements OnInit {
   }
 
   getUser() {
-    this.regService.getUser(1).subscribe(
+    this.regService.getUser(this.auth.userValue.id).subscribe(
       (response: User) => {
         this.user = response;
         this.getAppointments();

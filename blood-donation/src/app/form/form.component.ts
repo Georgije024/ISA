@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../helpers/authentication.service';
 import { User } from '../model/User';
 import { RegistrationserviceService } from '../registration/registrationservice.service';
 import { FormService } from './form.service';
@@ -13,10 +14,10 @@ export class FormComponent implements OnInit {
   user? : User;
   survey: boolean = false;
 
-  constructor(private formService: FormService, private regService: RegistrationserviceService) { }
+  constructor(private formService: FormService, private regService: RegistrationserviceService, private auth : AuthenticationService) { }
 
   ngOnInit(): void {
-    this.regService.getUser(1).subscribe(
+    this.regService.getUser(this.auth.userValue.id).subscribe(
       (response: User) => {
         this.user = response;
         console.log(this.user)
@@ -30,7 +31,7 @@ export class FormComponent implements OnInit {
   }
 
   submit(){
-      this.formService.surveySubmit(1).subscribe(
+      this.formService.surveySubmit(this.user.id).subscribe(
         (response: User) => {
           this.user = response;
           this.survey = true;

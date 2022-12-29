@@ -1,4 +1,5 @@
 import { MedicalCenterDTO } from "./medicalCenterDTO";
+import { Staff } from "./staff";
 import { User } from "./User";
 
 export interface Appointment {
@@ -7,4 +8,5 @@ export interface Appointment {
     user: User;
     medicalCenterDTO: MedicalCenterDTO;
     taken: boolean;
+    staff: Staff[];
 }

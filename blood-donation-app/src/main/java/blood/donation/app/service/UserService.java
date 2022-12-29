@@ -1,13 +1,17 @@
 package blood.donation.app.service;
 
+import blood.donation.app.model.ConfirmationToken;
 import blood.donation.app.model.LoginUser;
 import blood.donation.app.model.User;
+import blood.donation.app.model.UserRole;
 import blood.donation.app.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -15,14 +19,26 @@ import java.util.List;
 public class UserService{
 
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
+    private final ConfirmationTokenService confirmationTokenService;
+    public UserService(UserRepository userRepository, ConfirmationTokenService confirmationTokenService) {
         this.userRepository = userRepository;
+        this.confirmationTokenService = confirmationTokenService;
     }
 
 
     public User saveUser(User user){
+        user.setUserRole(UserRole.USER);
+
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user
+                );
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
         return userRepository.save(user);
+
     }
 
     public User fetchUserByEmail(String email){

@@ -7,13 +7,13 @@
           <a class="nav-link" routerLink="/center">Medical Center</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/form">Blood form</a>
+          <a class="nav-link" routerLink="/form" *ngIf="isAdmin && isLogedIn">Blood form</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/appointments">Appointments</a>
+          <a class="nav-link" routerLink="/appointments" *ngIf="isAdmin && isLogedIn">Appointments</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/complaint" *ngIf="!isAdmin">Complaint</a>
+          <a class="nav-link" routerLink="/complaint" *ngIf="!isAdmin && isLogedIn">Complaint</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">

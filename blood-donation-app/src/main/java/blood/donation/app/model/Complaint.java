@@ -4,27 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 
 import javax.persistence.*;
-import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class MedicalCenter {
+public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private String name;
     @OneToOne
-    private Address address;
-    @Column(columnDefinition = "integer default 0")
-    private Boolean isDeleted = false;
+    private User user;
     @Column
-    private double rating;
-    @OneToMany
-    private List<Staff> staff;
+    private String text;
+    @Column
+    private String responseText;
 }

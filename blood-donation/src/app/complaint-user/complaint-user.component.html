@@ -1,1 +1,24 @@
-<p>complaint-user works!</p>
+<br><br>
+<p>Hospital name: {{appointment.medicalCenterDTO.name}}</p>
+<p>Rating: {{appointment.medicalCenterDTO.rating}}</p>
+<p>City: {{appointment.medicalCenterDTO.city}}</p>
+
+<p>Date: {{appointment.date | date:'MMM d, y, hh:mm'}}</p>
+<br>
+Staff:
+
+<p *ngFor="let staff of appointment.staff">
+{{staff.name+" "+staff.surname}}
+<p>
+
+<button type="button" *ngIf="!checkStatus()"  class="btn btn-primary" style="margin:auto; display: block; margin-top: 100px;" (click)="cancelAppointment()">Cancel appointmet</button>
+
+
+
+<select ngModel name="booking_date" *ngIf="checkStatusZalba()" name="cars" id="cars" style="margin:auto; display: block; margin-top: 100px;" (ngModelChange)="ChangingValue($event)">
+    <option value="Centar">Centar</option>
+    <option *ngFor="let staff of appointment.staff" value={{staff.name}}>{{staff.name+" "+staff.surname}}</option>
+  </select>
+  <br>
+  <textarea *ngIf="checkStatusZalba()" name="message" id="message" style="height: 20%; width: 30%;margin:auto; display: block"></textarea>
+<button type="button" *ngIf="checkStatusZalba()"  class="btn btn-primary" style="margin:auto; display: block; margin-top: 100px;"  (click)="makeComplaint()">Make complaint</button>

@@ -17,6 +17,7 @@ public class AppointmentMapper implements Mapper<Appointment, AppointmentDTO> {
         appointmentDTO.setMedicalCenterDTO(medicalCenterMapper.entityToDto(entity.getMedicalCenter()));
         appointmentDTO.setUser(entity.getUser());
         appointmentDTO.setTaken(entity.isTaken());
+        appointmentDTO.setStaff(entity.getStaff());
         return appointmentDTO;
     }
 

@@ -2,10 +2,7 @@ package blood.donation.app.service;
 
 import blood.donation.app.dto.AppointmentDTO;
 import blood.donation.app.mapper.AppointmentMapper;
-import blood.donation.app.model.Appointment;
-import blood.donation.app.model.MedicalCenter;
-import blood.donation.app.model.Staff;
-import blood.donation.app.model.User;
+import blood.donation.app.model.*;
 import blood.donation.app.repository.AppointmentRepository;
 import blood.donation.app.repository.MedicalCenterRepository;
 import blood.donation.app.repository.StaffRepository;
@@ -24,6 +21,7 @@ public class BloodDonationService {
 private final StaffRepository staffRepository;
     private final UserRepository userRepository;
     private AppointmentMapper appointmentMapper = new AppointmentMapper();
+
 
 
     public BloodDonationService(AppointmentRepository appointmentRepository, MedicalCenterRepository medicalCenterRepository, StaffRepository staffRepository, UserRepository userRepository) {
@@ -137,7 +135,7 @@ private final StaffRepository staffRepository;
         User user = userRepository.findById(Long.valueOf(1)).get();
         Calendar cal = Calendar.getInstance();
 
-        cal.set(2021, 5, 25,8,30);
+        cal.set(2022, 5, 25,8,30);
         Appointment appointment = new Appointment();
         appointment.setDate(cal.getTime());
         appointment.setMedicalCenter(medicalCenter);
@@ -145,7 +143,7 @@ private final StaffRepository staffRepository;
         appointment.setStaff(staff);
         appointmentRepository.save(appointment);
 
-        cal.set(2022, 2, 14,11,00);
+        cal.set(2021, 2, 14,11,00);
         Appointment appointment1 = new Appointment();
         appointment1.setDate(cal.getTime());
         appointment1.setMedicalCenter(medicalCenter);
@@ -192,16 +190,19 @@ private final StaffRepository staffRepository;
     }
 
     public List<AppointmentDTO> getAppointments(Long userId) {
-        List<Appointment> appointments = appointmentRepository.findAll();
+//        List<Appointment> appointments = appointmentRepository.findAll();
+//        List<AppointmentDTO> appointmentDTOS = new ArrayList<AppointmentDTO>();
+//
+//        for(Appointment appointment : appointments){
+//            if(appointment.getUser()!=null) {
+//                if (appointment.getUser().getId().equals(userId)) {
+//                    appointmentDTOS.add(appointmentMapper.entityToDto(appointment));
+//                }
+//            }
+//        }
+        User user = userRepository.findById(userId).get();
         List<AppointmentDTO> appointmentDTOS = new ArrayList<AppointmentDTO>();
-
-        for(Appointment appointment : appointments){
-            if(appointment.getUser()!=null) {
-                if (appointment.getUser().getId().equals(userId)) {
-                    appointmentDTOS.add(appointmentMapper.entityToDto(appointment));
-                }
-            }
-        }
+        appointmentDTOS = appointmentMapper.entityListToDtoList(user.getAppointments());
         return appointmentDTOS;
     }
 
@@ -210,5 +211,8 @@ private final StaffRepository staffRepository;
         appointment.setTaken(false);
         appointment.setUser(null);
         appointmentRepository.save(appointment);
+    }
+
+    public void makeComplaint(Complaint complaint) {
     }
 }

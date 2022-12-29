@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AppComponent } from '../app.component';
 import { BlooddonationserviceService } from '../blooddonation/blooddonationservice.service';
 import { User } from '../model/User';
 
@@ -10,7 +11,7 @@ import { User } from '../model/User';
 })
 export class HomeComponent implements OnInit {
   
-  constructor(private bloodDonationService: BlooddonationserviceService) { }
+  constructor(private bloodDonationService: BlooddonationserviceService,private app: AppComponent) { }
 
   ngOnInit(): void {
   }
@@ -18,5 +19,14 @@ export class HomeComponent implements OnInit {
   public createAppointments(): void {
     this.bloodDonationService.createAppointments().subscribe();
   }
+  get isAdmin() {
+    return this.app.isAdmin;
+  }
 
+  get isLogedIn(){
+    if(this.app.isLogedIn.id === undefined){
+      return false;
+    }
+    return true;
+  }
 }

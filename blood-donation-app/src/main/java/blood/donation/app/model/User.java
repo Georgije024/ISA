@@ -50,8 +50,13 @@ public class User {
     @Column
     private boolean survey = false;
     @Column
+    private boolean accountVerified = false;
+    @Column
     private Date bloodDonationDate;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
 
+    public boolean isAccountVerifed(){
+        return accountVerified;
+    }
 }
