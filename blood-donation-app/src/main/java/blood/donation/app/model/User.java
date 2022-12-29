@@ -50,13 +50,15 @@ public class User {
     @Column
     private boolean survey = false;
     @Column
-    private boolean accountVerified = false;
+    private boolean enabled = false;
+    @Column(name="verification_code",updatable = false)
+    private String verificationCode;
     @Column
     private Date bloodDonationDate;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
 
-    public boolean isAccountVerifed(){
-        return accountVerified;
+    public boolean isEnabled(){
+        return this.enabled;
     }
 }

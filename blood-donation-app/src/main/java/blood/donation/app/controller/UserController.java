@@ -28,15 +28,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user){
-        String tempEmail = user.getEmail();
-        if(tempEmail != null && !"".equals(tempEmail)){
-            User userObj = userService.fetchUserByEmail(tempEmail);
-            if(userObj != null){
-                return new ResponseEntity<>("Korisnik sa tom adresom vec postoji", HttpStatus.BAD_REQUEST);
-            }
-        }
-        return new ResponseEntity<>(userService.register(user),HttpStatus.OK);
+    public String registerUser(@RequestBody User user){
+        userService.register(user);
+        return "register/register_success";
     }
 
     @GetMapping("/survey/{userId}")
@@ -59,6 +53,9 @@ public class UserController {
            throw new Exception("Invalid username/password");
         }
         User user = userService.getByEmail(authRequest.getEmail());
+        if(!user.isEnabled()){
+            throw new Exception("Invalid username/password");
+        }
         return jwtUtil.generateToken(authRequest.getEmail(),user.getUserRole().name(),user.getId());
     }
 

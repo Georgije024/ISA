@@ -1,18 +1,14 @@
 package blood.donation.app.service;
 
-import blood.donation.app.email.EmailSender;
-import blood.donation.app.model.ConfirmationToken;
 import blood.donation.app.model.LoginUser;
 import blood.donation.app.model.User;
-import blood.donation.app.model.UserRole;
 import blood.donation.app.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -20,43 +16,17 @@ import java.util.UUID;
 public class UserService{
 
     private final UserRepository userRepository;
-    private final EmailSender emailSender;
-    private final ConfirmationTokenService confirmationTokenService;
-    public UserService(UserRepository userRepository, EmailSender emailSender, ConfirmationTokenService confirmationTokenService) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.emailSender = emailSender;
-        this.confirmationTokenService = confirmationTokenService;
     }
 
 
-    public String saveUser(User user){
-        user.setUserRole(UserRole.USER);
+    public void register(User user) {
+        String randomCode = RandomString.make(64);
+        user.setVerificationCode(randomCode);
         userRepository.save(user);
-
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                user
-                );
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
-        return token;
     }
 
-    public User register(User user) {
-        String token = saveUser(user);
-
-        String link = "http://localhost:8080/api/user/register/confirm?token=" + token;
-        emailSender.send(
-                user.getEmail(),
-                buildEmail(user.getName(), link));
-
-        return user;
-    }
-    private void aa() {
-
-    }
 
     private String buildEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
