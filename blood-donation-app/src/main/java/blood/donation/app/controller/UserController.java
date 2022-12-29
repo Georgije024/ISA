@@ -50,7 +50,6 @@ public class UserController {
     @GetMapping("/verify")
     public void verifyAccount(@Param("code") String code){
         boolean verified = userService.verify(code);
-    }
 
     @GetMapping("/survey/{userId}")
     public User survey(@PathVariable("userId") String userId){
@@ -73,6 +72,7 @@ public class UserController {
         }
         User user = userService.getByEmail(authRequest.getEmail());
         if(!user.isAccountVerifed()){
+
             throw new Exception("Invalid username/password");
         }
         return jwtUtil.generateToken(authRequest.getEmail(),user.getUserRole().name(),user.getId());

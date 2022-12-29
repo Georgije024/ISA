@@ -1,6 +1,5 @@
 package blood.donation.app.service;
 
-import blood.donation.app.email.EmailSender;
 import blood.donation.app.model.LoginUser;
 import blood.donation.app.model.User;
 import blood.donation.app.model.UserRole;
@@ -30,12 +29,8 @@ public class UserService{
     @Autowired
     private EmailSenderService emailSenderService;
     private final UserRepository userRepository;
-    private final EmailSender emailSender;
-    private final ConfirmationTokenService confirmationTokenService;
-    public UserService(UserRepository userRepository, EmailSender emailSender, ConfirmationTokenService confirmationTokenService) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.emailSender = emailSender;
-        this.confirmationTokenService = confirmationTokenService;
     }
     
 
@@ -86,13 +81,14 @@ public class UserService{
     public boolean verify(String verificationCode){
         User user = userRepository.findByVerificationCode(verificationCode);
 
-        if(user == null || user.isAccountVerifed()){
+        if(user == null || user.isAccountVerified()){
             return false;
         }else{
             userRepository.enable(user.getId());
             return true;
         }
     }
+
 
     private String buildEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +

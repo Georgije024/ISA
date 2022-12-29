@@ -52,13 +52,12 @@ public class User {
     @Column
     private boolean accountVerified;
     @Column(name="verification_code", length = 64)
+
     private String verificationCode;
     @Column
     private Date bloodDonationDate;
     @Column(columnDefinition = "integer default 0")
     private Boolean isDeleted = false;
 
-    public boolean isAccountVerifed(){
-        return accountVerified;
-    }
+
 }
