@@ -50,7 +50,9 @@ public class User {
     @Column
     private boolean survey = false;
     @Column
-    private boolean accountVerified = false;
+    private boolean accountVerified;
+    @Column(name="verification_code", length = 64)
+    private String verificationCode;
     @Column
     private Date bloodDonationDate;
     @Column(columnDefinition = "integer default 0")

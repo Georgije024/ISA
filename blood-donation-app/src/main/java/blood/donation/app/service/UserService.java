@@ -1,24 +1,34 @@
 package blood.donation.app.service;
 
 import blood.donation.app.email.EmailSender;
-import blood.donation.app.model.ConfirmationToken;
 import blood.donation.app.model.LoginUser;
 import blood.donation.app.model.User;
 import blood.donation.app.model.UserRole;
 import blood.donation.app.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.utility.RandomString;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
 
 @Service
 @Transactional
 @Slf4j
 public class UserService{
 
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
     private final UserRepository userRepository;
     private final EmailSender emailSender;
     private final ConfirmationTokenService confirmationTokenService;
@@ -27,35 +37,61 @@ public class UserService{
         this.emailSender = emailSender;
         this.confirmationTokenService = confirmationTokenService;
     }
-
-
-    public String saveUser(User user){
-        user.setUserRole(UserRole.USER);
-        userRepository.save(user);
-
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                user
-                );
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
-        return token;
-    }
+    
 
     public User register(User user) {
-        String token = saveUser(user);
-
-        String link = "http://localhost:8080/api/user/register/confirm?token=" + token;
-        emailSender.send(
-                user.getEmail(),
-                buildEmail(user.getName(), link));
-
-        return user;
+        user.setUserRole(UserRole.USER);
+        String randomCode = RandomString.make(64);
+        user.setVerificationCode(randomCode);
+        return userRepository.save(user);
     }
-    private void aa() {
 
+    public void sendVerificationEmail(User user, String siteURL){
+        //JavaMailUtil javaMailUtil = new JavaMailUtil();
+        //javaMailUtil.sendMail("isamejl2022@gmail.com",user.getVerificationCode());
+
+
+        String subject = "Please verify your registration";
+        String senderName = "ISA2022";
+        String mailContent = "<p>Dear"+ user.getName() + " "+ user.getSurname()+ ",</p>";
+        mailContent += "<p> Please click the link below to verify registration:</p>";
+        String verifyURL = siteURL + "/user/verify?code="+user.getVerificationCode();
+        mailContent += "<h3><a href=\""+ verifyURL+ "\">VERIFY</a></h3>";
+        mailContent += "<p>Thank you<br>The Blood donation <p>";
+
+
+        //sendMail();
+
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("mejlzaisu@gmail.com");
+        message.setTo(user.getEmail());
+        message.setText(mailContent);
+        //message.setText("http://localhost:8086/api/user/verify?code="+user.getVerificationCode());
+        message.setSubject(subject);
+        try{
+            mailSender.send(message);
+        }catch(Exception e){
+            log.error("failed to send email", e);
+            throw new IllegalStateException("failed to send email");
+        }
+    }
+
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void sendMail(){
+//        emailSenderService.sendEmail("tanasic.georgije1999@gmail.com","subject","content");
+//    }
+
+    public boolean verify(String verificationCode){
+        User user = userRepository.findByVerificationCode(verificationCode);
+
+        if(user == null || user.isAccountVerifed()){
+            return false;
+        }else{
+            userRepository.enable(user.getId());
+            return true;
+        }
     }
 
     private String buildEmail(String name, String link) {

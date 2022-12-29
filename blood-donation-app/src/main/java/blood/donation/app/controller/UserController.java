@@ -6,11 +6,16 @@ import blood.donation.app.model.User;
 import blood.donation.app.service.UserService;
 import blood.donation.app.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/user")
@@ -28,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user){
+    public ResponseEntity<?> registerUser(@RequestBody User user, HttpServletRequest request) throws Exception{
         String tempEmail = user.getEmail();
         if(tempEmail != null && !"".equals(tempEmail)){
             User userObj = userService.fetchUserByEmail(tempEmail);
@@ -36,7 +41,15 @@ public class UserController {
                 return new ResponseEntity<>("Korisnik sa tom adresom vec postoji", HttpStatus.BAD_REQUEST);
             }
         }
-        return new ResponseEntity<>(userService.register(user),HttpStatus.OK);
+        User aa = userService.register(user);
+        String siteURL = Utility.getSiteURL(request);
+        userService.sendVerificationEmail(aa,siteURL);
+        return new ResponseEntity<>(aa,HttpStatus.OK);
+    }
+
+    @GetMapping("/verify")
+    public void verifyAccount(@Param("code") String code){
+        boolean verified = userService.verify(code);
     }
 
     @GetMapping("/survey/{userId}")
@@ -59,6 +72,9 @@ public class UserController {
            throw new Exception("Invalid username/password");
         }
         User user = userService.getByEmail(authRequest.getEmail());
+        if(!user.isAccountVerifed()){
+            throw new Exception("Invalid username/password");
+        }
         return jwtUtil.generateToken(authRequest.getEmail(),user.getUserRole().name(),user.getId());
     }
 
